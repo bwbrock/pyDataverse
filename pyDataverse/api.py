@@ -2416,6 +2416,107 @@ class NativeApi(Api):
             url = f"{self.base_url_api_native}/files/{identifier}/restrict"
         return self.put_request(url, auth=True)
 
+    def get_all_settings(self) -> Response:
+        """List all database settings.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-all-database-settings>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/settings
+
+        Parameters
+        ----------
+        None.
+
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+
+        url = f"{self.base_url}api/admin/settings"
+        return self.get_request(url)
+
+    def configure_setting(self, setting: str, value:str, auth=True) -> Response:
+        """Configure a setting.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#configure-database-setting>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            PUT http://$SERVER/api/admin/settings/$setting
+
+        The value of the setting is sent as the body of a PUT request.
+
+        Parameters
+        ----------
+        setting: str
+            Name of a setting to change.
+        value: str
+            Value the setting should have after the change.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url}api/admin/settings/{setting}"
+        return self.put_request(url, data=value, auth=auth)
+
+    def get_setting(self, setting:str, auth=True) -> Response:
+        """Get a single named setting.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#get-single-database-setting>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/settings/$setting
+
+        Parameters
+        ----------
+        setting: str
+            Name of a setting to retrieve.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url}api/admin/settings/{setting}"
+        return self.get_request(url, auth=auth)
+
+    def delete_setting(self, setting:str) -> Response:
+        """Delete a named setting.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-database-setting>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            DELETE http://$SERVER/api/admin/settings/$setting
+
+        Parameters
+        ----------
+        setting: str
+            Name of a setting to delete.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url}api/admin/settings/{setting}"
+        return self.delete_request(url)
+
 
 class SearchApi(Api):
     """Class to access Dataverse's Search API.
