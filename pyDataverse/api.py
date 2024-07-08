@@ -2416,7 +2416,7 @@ class NativeApi(Api):
             url = f"{self.base_url_api_native}/files/{identifier}/restrict"
         return self.put_request(url, auth=True)
 
-    def get_all_settings(self) -> Response:
+    def get_all_settings(self, auth:bool = True) -> Response:
         """List all database settings.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-all-database-settings>`_
@@ -2429,8 +2429,8 @@ class NativeApi(Api):
 
         Parameters
         ----------
-        None.
-
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
@@ -2438,10 +2438,10 @@ class NativeApi(Api):
             Response object of requests library.
         """
 
-        url = f"{self.base_url}api/admin/settings"
-        return self.get_request(url)
+        url = f"{self.base_url_api_native}/admin/settings"
+        return self.get_request(url, auth=auth)
 
-    def configure_setting(self, setting: str, value:str, auth=True) -> Response:
+    def configure_setting(self, setting:str, value:str, auth: bool = True) -> Response:
         """Configure a setting.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#configure-database-setting>`_
@@ -2460,16 +2460,18 @@ class NativeApi(Api):
             Name of a setting to change.
         value: str
             Value the setting should have after the change.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{self.base_url}api/admin/settings/{setting}"
+        url = f"{self.base_url_api_native}/admin/settings/{setting}"
         return self.put_request(url, data=value, auth=auth)
 
-    def get_setting(self, setting:str, auth=True) -> Response:
+    def get_setting(self, setting:str, auth:bool = True) -> Response:
         """Get a single named setting.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#get-single-database-setting>`_
@@ -2484,16 +2486,18 @@ class NativeApi(Api):
         ----------
         setting: str
             Name of a setting to retrieve.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{self.base_url}api/admin/settings/{setting}"
+        url = f"{self.base_url_api_native}/admin/settings/{setting}"
         return self.get_request(url, auth=auth)
 
-    def delete_setting(self, setting:str) -> Response:
+    def delete_setting(self, setting:str, auth:bool = True) -> Response:
         """Delete a named setting.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-database-setting>`_
@@ -2508,16 +2512,18 @@ class NativeApi(Api):
         ----------
         setting: str
             Name of a setting to delete.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{self.base_url}api/admin/settings/{setting}"
-        return self.delete_request(url)
+        url = f"{self.base_url_api_native}/admin/settings/{setting}"
+        return self.delete_request(url, auth=auth)
 
-    def list_auth_provider_factories(self, auth=True) -> Response:
+    def list_auth_provider_factories(self, auth:bool = True) -> Response:
         """List the authentication provider factories.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-authentication-provider-factories>`_
@@ -2530,17 +2536,18 @@ class NativeApi(Api):
 
         Parameters
         ----------
-        None.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{self.base_url}api/admin/authenticationProviderFactories"
+        url = f"{self.base_url_api_native}/admin/authenticationProviderFactories"
         return self.get_request(url, auth=auth)
 
-    def list_auth_providers(self, auth=True) -> Response:
+    def list_auth_providers(self, auth:bool = True) -> Response:
         """List the authentication providers.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-authentication-providers>`_
@@ -2553,17 +2560,18 @@ class NativeApi(Api):
 
         Parameters
         ----------
-        None.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url}api/admin/authenticationProviders"
+        url = f"{base_url_api_native}/admin/authenticationProviders"
         return self.get_request(url, auth=auth)
 
-    def add_auth_provider(self, authProvider:str, auth=True) -> Response:
+    def add_auth_provider(self, authProvider:str, auth:bool = True) -> Response:
         """Add an authentication provider.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#add-authentication-provider>`_
@@ -2578,16 +2586,18 @@ class NativeApi(Api):
         ----------
         authProvider: str
             authentication provider to add, as JSON
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.                                                                 
         """
-        url = f"{base_url}api/admin/authenticationProviders"
+        url = f"{base_url_api_native}/admin/authenticationProviders"
         return self.post_request(url, data=authProvider, auth=auth)
 
-    def show_auth_provider(self, identifier:str, auth=True) -> Response:
+    def show_auth_provider(self, identifier:str, auth:bool = True) -> Response:
         """Show information about an authentication provider.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#show-authentication-provider>`_
@@ -2602,13 +2612,15 @@ class NativeApi(Api):
         ----------
         identifier: str
             An authentication provider
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url}api/admin/authenticationProvider/{identifier}"
+        url = f"{base_url_api_native}/admin/authenticationProvider/{identifier}"
         return self.get_request(url, auth=auth)
 
 
