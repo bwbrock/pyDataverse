@@ -2517,6 +2517,100 @@ class NativeApi(Api):
         url = f"{self.base_url}api/admin/settings/{setting}"
         return self.delete_request(url)
 
+    def list_auth_provider_factories(self, auth=True) -> Response:
+        """List the authentication provider factories.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-authentication-provider-factories>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/authenticationProviderFactories
+
+        Parameters
+        ----------
+        None.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url}api/admin/authenticationProviderFactories"
+        return self.get_request(url, auth=auth)
+
+    def list_auth_providers(self, auth=True) -> Response:
+        """List the authentication providers.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-authentication-providers>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/authenticationProviders
+
+        Parameters
+        ----------
+        None.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{base_url}api/admin/authenticationProviders"
+        return self.get_request(url, auth=auth)
+
+    def add_auth_provider(self, authProvider:str, auth=True) -> Response:
+        """Add an authentication provider.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#add-authentication-provider>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            POST http://$SERVER/api/admin/authenticationProviders
+
+        Parameters
+        ----------
+        authProvider: str
+            authentication provider to add, as JSON
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.                                                                 
+        """
+        url = f"{base_url}api/admin/authenticationProviders"
+        return self.post_request(url, data=authProvider, auth=auth)
+
+    def show_auth_provider(self, identifier:str, auth=True) -> Response:
+        """Show information about an authentication provider.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#show-authentication-provider>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/authenticationProvider/$identifier
+
+        Parameters
+        ----------
+        identifier: str
+            An authentication provider
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{base_url}api/admin/authenticationProvider/{identifier}"
+        return self.get_request(url, auth=auth)
+
 
 class SearchApi(Api):
     """Class to access Dataverse's Search API.
