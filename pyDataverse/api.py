@@ -2568,7 +2568,7 @@ class NativeApi(Api):
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url_api_native}/admin/authenticationProviders"
+        url = f"{self.base_url_api_native}/admin/authenticationProviders"
         return self.get_request(url, auth=auth)
 
     def add_auth_provider(self, authProvider:str, auth:bool = True) -> Response:
@@ -2594,7 +2594,7 @@ class NativeApi(Api):
         requests.Response
             Response object of requests library.                                                                 
         """
-        url = f"{base_url_api_native}/admin/authenticationProviders"
+        url = f"{self.base_url_api_native}/admin/authenticationProviders"
         return self.post_request(url, data=authProvider, auth=auth)
 
     def show_auth_provider(self, identifier:str, auth:bool = True) -> Response:
@@ -2606,7 +2606,7 @@ class NativeApi(Api):
 
         .. code-block:: bash
 
-            GET http://$SERVER/api/admin/authenticationProvider/$identifier
+            GET http://$SERVER/api/admin/authenticationProviders/$identifier
 
         Parameters
         ----------
@@ -2620,8 +2620,91 @@ class NativeApi(Api):
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url_api_native}/admin/authenticationProvider/{identifier}"
+        url = f"{self.base_url_api_native}/admin/authenticationProviders/{identifier}"
         return self.get_request(url, auth=auth)
+
+    # XXX - verify contents of the PUT request in testing, because it's not
+    # in the API docs for the REST call
+    def enable_auth_provider(self, identifier:str, enable:bool = True, auth:bool = True) -> Response:
+        """Enable (or disable) an authentication provider.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#enable-or-disable-an-authentication-provider>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            PUT http://$SERVER/api/admin/authenticationProviders/$identifier/enabled
+
+        Parameters
+        ----------
+        identifier: str
+            An authentication provider.
+        enable: bool
+            True to enable an authentication provider, False to disable
+            that provider.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url_api_native}/admin/authenticationProviders/{identifier}/enabled"
+        return self.put_request(url, auth=auth, data=str(enable))
+
+    def check_auth_provider_enabled(self, identifier:str, auth:bool = True) -> Response:
+        """Check if an authentication provider is enabled.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#check-if-an-authentication-provider-is-enabled>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/authenticationProviders/$identifier/enabled
+
+        Parameters
+        ----------
+        identifier: str
+            An authentication provider.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url_api_native}/admin/authenticationProviders/{identifier}/enabled"
+        return self.get_request(url, auth=auth)
+
+    def delete_auth_provider(self, identifier:str, auth:bool = True) -> Response:
+        """Delete an authentication provider.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-an-authentication-provider>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            DELETE http://$SERVER/api/admin/authenticationProviders/$identifier
+
+        Parameters
+        ----------
+        identifier: str
+            An authentication provider.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url_api_native}/admin/authenticationProviders/{identifier}"
+        return self.delete_request(url, auth=auth)
 
 
 class SearchApi(Api):
