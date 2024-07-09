@@ -2706,6 +2706,81 @@ class NativeApi(Api):
         url = f"{self.base_url_api_native}/admin/authenticationProviders/{identifier}"
         return self.delete_request(url, auth=auth)
 
+    def list_global_roles(self, auth:bool = False) -> Response:
+        """List all global roles in the system.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-global-roles>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            GET http://$SERVER/api/admin/roles
+
+        Parameters
+        ----------
+        auth: bool
+            True if api authorization is necessary. Defaults to ``False``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url_api_native}/admin/roles"
+        return self.get_request(url, auth=auth)
+
+    def create_global_role(self, role:str) -> Response:
+        """Create a global role.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#create-global-role>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            POST http://$SERVER/api/admin/roles
+
+        Parameters
+        ----------
+        role: str
+            String representing the role as a JSON object.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{base_url_api_native}/admin/roles"
+        return post_request(url, data=role, auth=auth)
+
+    # XXX - does not handle aliases correctly, yet
+    def delete_global_role(self, role:str) -> Response:
+        """Delete a global role.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-global-role>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+            POST http://$SERVER/api/admin/roles
+
+        Parameters
+        ----------
+        role: str
+            Identifier of the global role to be deleted.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{base_url_api_native}/admin/roles/{role}"
+        return delete_request(url)
+
 
 class SearchApi(Api):
     """Class to access Dataverse's Search API.
