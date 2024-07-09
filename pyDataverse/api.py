@@ -2730,7 +2730,7 @@ class NativeApi(Api):
         url = f"{self.base_url_api_native}/admin/roles"
         return self.get_request(url, auth=auth)
 
-    def create_global_role(self, role:str) -> Response:
+    def create_global_role(self, role:str, auth:bool = True) -> Response:
         """Create a global role.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#create-global-role>`_
@@ -2753,11 +2753,11 @@ class NativeApi(Api):
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url_api_native}/admin/roles"
-        return post_request(url, data=role, auth=auth)
+        url = f"{self.base_url_api_native}/admin/roles"
+        return self.post_request(url, data=role, auth=auth)
 
     # XXX - does not handle aliases correctly, yet
-    def delete_global_role(self, role:str) -> Response:
+    def delete_global_role(self, role:str, auth:bool = True) -> Response:
         """Delete a global role.
 
         `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-global-role>`_
@@ -2766,20 +2766,60 @@ class NativeApi(Api):
 
         .. code-block:: bash
 
-            POST http://$SERVER/api/admin/roles
+             DELETE http://$SERVER/api/admin/roles/$role
 
         Parameters
         ----------
         role: str
             Identifier of the global role to be deleted.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
 
         Returns
         -------
         requests.Response
             Response object of requests library.
         """
-        url = f"{base_url_api_native}/admin/roles/{role}"
-        return delete_request(url)
+        url = f"{self.base_url_api_native}/admin/roles/{role}"
+        return self.delete_request(url, auth=auth)
+
+
+    def list_users(self, searchTerm:str = None, itemsPerPage:int, selectedPage:int, sortKey:str = None, auth:bool = False) -> Response:
+        """List the users.
+
+        Output is paginated by default, in this implementation.
+
+        Parameters
+        ----------
+        searchTerm: str
+            String describing the search.
+        itemsPerPage: int
+            Number of items to display for each page.
+        selectedPage: int
+            Page number of results to show.
+        sortKey: str
+            How to sort results, before pagination
+        auth: bool
+            True if api authorization is necessary. Defaults to ``False``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        data = {}
+        if searchTerm:
+            data[searchTerm] = searchTerm
+        if itemsPerPage:
+            data[itemsPerPage] = itemsPerPage
+        if selectedPage:
+            data[selectedPage] = selectedPage
+        if sortKey:
+            data[sortKey] = sortKey
+
+        url = f"{self.base_url_api_native}/admin/list-users"
+        return self.get_request(url, data=data, auth=auth)
+
 
 
 class SearchApi(Api):
