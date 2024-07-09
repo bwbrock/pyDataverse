@@ -2789,6 +2789,17 @@ class NativeApi(Api):
 
         Output is paginated by default, in this implementation.
 
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-users>`_
+
+        Documentation gives examples of handling pagination to build the UI
+        workflow.
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+             GET http://$SERVER/api/admin/list-users
+
         Parameters
         ----------
         searchTerm: str
