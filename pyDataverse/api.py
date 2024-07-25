@@ -2831,6 +2831,138 @@ class NativeApi(Api):
         url = f"{self.base_url_api_native}/admin/list-users"
         return self.get_request(url, data=data, auth=auth)
 
+    def get_user(self, identifier:str, auth:bool = False) -> Response:
+        """List a single user.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#list-single-user>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+             GET http://$SERVER/api/admin/authenticatedUsers/$identifier
+
+        Parameters
+        ----------
+        identifier: str
+            Identifier of the user.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``False``.
+
+        Returns
+        -------
+        requests.Response object
+        """
+        url = f"{self.base_url_api_native}/admin/authenticatedUsers"
+        return self.get_request(url, auth=auth)
+
+    # XXX - check that self.*_request accept a dict passed through data,
+    # and serialize that correctly into JSON.
+    def create_user(self, user:dict, auth:bool = True) -> Response:
+        """Create an authenticated user.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#create-an-authenticated-user>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+             POST http://$SERVER/api/admin/authenticatedUsers
+
+        Sample user object:
+
+        {
+          "authenticationProviderId": "orcid",
+          "persistentUserId": "0000-0002-3283-0661",
+          "identifier": "@pete",
+          "firstName": "Pete K.",
+          "lastName": "Dataversky",
+          "email": "pete@mailinator.com"
+        }
+
+        Parameters
+        ----------
+        user: dict
+            Description of the new user.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+        requests.Response
+            Response object of requests library.
+        """
+        url = f"{self.base_url_api_native}/admin/authenticatedUsers"
+        return self.post_request(url, data=user, auth=auth)
+
+    def merge_users(self, toMergeIdentifier:str, continuingIdentifier:str, auth:bool = True) -> Response:
+        """Merge two AuthenticatedUser accounts.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#merge-user-accounts>`_
+
+        HTTP Request:
+
+        .. code-block:: bash
+
+             POST
+             http://$SERVER/users/$toMergeIdentifier/mergeIntoUser/$continuingIdentifier
+
+
+        Parameters
+        ----------
+        delete_identifer: str
+            Identifier or ID of a user to delete.  The string is treated as
+            an id if it begins with a leading '@', otherwise it is treated
+            as an identifier.
+        keep_identifier: str
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+            Response object of requests library.
+        """
+        if identifier[0] == '@':
+            url = f"{self.base_url_api_native}/admin/authenticatedUsers/id/{identifier}"
+        else:
+            url = f"{self.base_url_api_native}/admin/authenticatedUsers/{identifier}"
+        return self.delete_request(url, auth=auth)
+
+    def delete_user(self, identifier:str, auth:bool = True) -> Response:
+        """Delete an AuthenticatedUser.
+
+        `Docs <https://guides.dataverse.org/en/latest/api/native-api.html#delete-a-user>`_
+
+        HTTP Request:
+
+        Delete an authenticatedUser whose id was passed:
+        .. code-block:: bash
+
+             DELETE http://$SERVER/api/admin/authenticatedUsers/id/$identifier
+
+        Delete an authenticatedUser whose identifier was passed:
+        .. code-block:: bash
+
+             DELETE http://$SERVER/api/admin/authenticatedUsers/$identifier
+
+        Parameters
+        ----------
+        identifer: str
+            Identifier or ID of a user to delete.  The string is treated as
+            an id if it begins with a leading '@', otherwise it is treated
+            as an identifier.
+        auth: bool
+            True if api authorization is necessary. Defaults to ``True``.
+
+        Returns
+        -------
+            Response object of requests library.
+        """
+        if identifier[0] == '@':
+            url = f"{self.base_url_api_native}/admin/authenticatedUsers/id/{identifier}"
+        else:
+            url = f"{self.base_url_api_native}/admin/authenticatedUsers/{identifier}"
+        return self.delete_request(url, auth=auth)
 
 
 class SearchApi(Api):
